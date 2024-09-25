@@ -64,7 +64,9 @@ public class MecanumDemo_Auto_2 extends LinearOpMode {
 
             // Update the telemetry on the driver station
             telemetry.update();
+            sleep(2000);
 
+            //Drive forward
             while (pos.x < 15.0) {
                 pos = myOtos.getPosition();
                 m1.setPower(1);
@@ -80,7 +82,63 @@ public class MecanumDemo_Auto_2 extends LinearOpMode {
                 // Update the telemetry on the driver station
                 telemetry.update();
             }
-            while (pos.h < 90.0) {
+            m1.setPower(0);
+            m2.setPower(0);
+            m3.setPower(0);
+            m4.setPower(0);
+
+            sleep(2000);
+
+            //Turn left
+            while (pos.h < 87.0) {
+                pos = myOtos.getPosition();
+                m1.setPower(-1);
+                m2.setPower(-1);
+                m3.setPower(1);
+                m4.setPower(1);
+
+                // Log the position to the telemetry
+                telemetry.addData("X coordinate", pos.x);
+                telemetry.addData("Y coordinate", pos.y);
+                telemetry.addData("Heading angle", pos.h);
+
+                // Update the telemetry on the driver station
+                telemetry.update();
+
+            }
+            m1.setPower(0);
+            m2.setPower(0);
+            m3.setPower(0);
+            m4.setPower(0);
+
+            sleep(2000);
+
+            //Drive forward
+            while (pos.y < 40.0) {
+                pos = myOtos.getPosition();
+                m1.setPower(1);
+                m2.setPower(1);
+                m3.setPower(1);
+                m4.setPower(1);
+
+                // Log the position to the telemetry
+                telemetry.addData("X coordinate", pos.x);
+                telemetry.addData("Y coordinate", pos.y);
+                telemetry.addData("Heading angle", pos.h);
+
+                // Update the telemetry on the driver station
+                telemetry.update();
+
+            }
+            m1.setPower(0);
+            m2.setPower(0);
+            m3.setPower(0);
+            m4.setPower(0);
+
+            sleep(2000);
+
+            //Turn left
+            while (pos.h < 135.0) {
                 pos = myOtos.getPosition();
                 m1.setPower(-1);
                 m2.setPower(-1);
@@ -99,8 +157,43 @@ public class MecanumDemo_Auto_2 extends LinearOpMode {
             m2.setPower(0);
             m3.setPower(0);
             m4.setPower(0);
-            }
 
+            sleep(2000);
+
+            //Drive forward
+            while (pos.x > 8.0) {
+                pos = myOtos.getPosition();
+                m1.setPower(1);
+                m2.setPower(1);
+                m3.setPower(1);
+                m4.setPower(1);
+
+                // Log the position to the telemetry
+                telemetry.addData("X coordinate", pos.x);
+                telemetry.addData("Y coordinate", pos.y);
+                telemetry.addData("Heading angle", pos.h);
+
+                // Update the telemetry on the driver station
+                telemetry.update();
+            }
+            m1.setPower(0);
+            m2.setPower(0);
+            m3.setPower(0);
+            m4.setPower(0);
+
+            sleep(2000);
+
+            // Log the position to the telemetry
+            telemetry.addData("X coordinate", pos.x);
+            telemetry.addData("Y coordinate", pos.y);
+            telemetry.addData("Heading angle", pos.h);
+
+            // Update the telemetry on the driver station
+            telemetry.update();
+
+            requestOpModeStop();
+
+        }
     }
 
     private void configureOtos() {
