@@ -1,0 +1,141 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
+/**
+ * Example OpMode. Demonstrates use of gyro, color sensor, encoders, and telemetry.
+ *
+ */
+@Autonomous(name = "MecanumDemo Auto Circle For Loop", group = "MecanumBot")
+public class MecanumDemo_Auto_Circle_For_Loop_Test extends LinearOpMode {
+
+    SparkFunOTOS myOtos;
+    DcMotorEx m1, m2, m3, m4;
+    SparkFunOTOS.Pose2D pos;
+
+
+    public void runOpMode() throws InterruptedException{
+        myOtos = hardwareMap.get(SparkFunOTOS.class, "sensor_otos");
+
+        m1 = hardwareMap.get(DcMotorEx.class, "back_left_motor");
+        m2 = hardwareMap.get(DcMotorEx.class, "front_left_motor");
+        m3 = hardwareMap.get(DcMotorEx.class, "front_right_motor");
+        m4 = hardwareMap.get(DcMotorEx.class, "back_right_motor");
+        m1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        m2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        m3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        m4.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        m1.setDirection(DcMotor.Direction.REVERSE);
+        m2.setDirection(DcMotor.Direction.REVERSE);
+
+        pos = myOtos.getPosition();
+
+        configureOtos();
+
+        telemetry.addData("Press Start When Ready","");
+        updatePositionTelemetry();
+
+        waitForStart();
+
+        for (int i=0; i<4; i++){
+
+            //Drive forward
+            while (pos.x < 48.0) {
+                pos = myOtos.getPosition();
+                m1.setPower(1);
+                m2.setPower(1);
+                m3.setPower(1);
+                m4.setPower(1);
+                updatePositionTelemetry();
+            }
+            stopMotion();
+            pause();
+
+            //Turn left
+            while (pos.h < 87.5) {
+                pos = myOtos.getPosition();
+                m1.setPower(-1);
+                m2.setPower(-1);
+                m3.setPower(1);
+                m4.setPower(1);
+                updatePositionTelemetry();
+            }
+            stopMotion();
+            reset();
+            pause();
+        }
+    }
+
+    private void reset(){
+
+        myOtos.resetTracking();
+        pos = myOtos.getPosition();
+        telemetry.addLine("DID IT RESET?)");
+        telemetry.addData("X coordinate", pos.x);
+        telemetry.addData("Y coordinate", pos.y);
+        telemetry.addData("Heading angle", pos.h);
+        telemetry.update();
+    }
+    private void pause() {
+        sleep(1000);
+    }
+
+    private void updatePositionTelemetry() {
+        // Log the position to the telemetry
+        pos = myOtos.getPosition();
+        telemetry.addData("X coordinate", pos.x);
+        telemetry.addData("Y coordinate", pos.y);
+        telemetry.addData("Heading angle", pos.h);
+
+        // Update the telemetry on the driver station
+        telemetry.update();
+    }
+
+    private void stopMotion() {
+        m1.setPower(0);
+        m2.setPower(0);
+        m3.setPower(0);
+        m4.setPower(0);
+        pause();
+    }
+
+    private void configureOtos() {
+        telemetry.addLine("Configuring OTOS...");
+        telemetry.update();
+
+        myOtos.setLinearUnit(DistanceUnit.INCH);
+
+        myOtos.setAngularUnit(AngleUnit.DEGREES);
+
+        SparkFunOTOS.Pose2D offset = new SparkFunOTOS.Pose2D(0, 0, 0);
+        myOtos.setOffset(offset);
+
+        myOtos.setLinearScalar(1.0);
+        myOtos.setAngularScalar(1.0);
+
+        myOtos.calibrateImu();
+
+        myOtos.resetTracking();
+
+        SparkFunOTOS.Pose2D currentPosition = new SparkFunOTOS.Pose2D(0, 0, 0);
+        myOtos.setPosition(currentPosition);
+
+        SparkFunOTOS.Version hwVersion = new SparkFunOTOS.Version();
+        SparkFunOTOS.Version fwVersion = new SparkFunOTOS.Version();
+        myOtos.getVersionInfo(hwVersion, fwVersion);
+
+        telemetry.addLine("OTOS configured! Press start to get position data!");
+        telemetry.addLine();
+        telemetry.addLine(String.format("OTOS Hardware Version: v%d.%d", hwVersion.major, hwVersion.minor));
+        telemetry.addLine(String.format("OTOS Firmware Version: v%d.%d", fwVersion.major, fwVersion.minor));
+        telemetry.update();
+    }
+}
