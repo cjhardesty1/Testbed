@@ -1,9 +1,4 @@
-/*
-    SPDX-License-Identifier: MIT
-    Copyright (c) 2024 SparkFun Electronics
-*/
-// Modified by Team Beta 8397 for use in the virtual_robot simulator
-package org.firstinspires.ftc.teamcode.disabled_samples;
+package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -12,21 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-/*
- * This OpMode illustrates how to use the SparkFun Qwiic Optical Tracking Odometry Sensor (OTOS)
- *
- * The OpMode assumes that the sensor is configured with a name of "sensor_otos".
- *
- * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
- *
- * See the sensor's product page: https://www.sparkfun.com/products/24904
- */
+
 @Autonomous(name = "GR.calibrate", group = "Sensor")
-
-
-
-
 
 public class OTOS_circle extends LinearOpMode {
     // Create an instance of the sensor
@@ -50,20 +32,14 @@ public class OTOS_circle extends LinearOpMode {
         fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        // DcMotorEx.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        // All the configuration for the OTOS is done in this helper method, check it out!
+        
+    
         configureOtos();
         // Wait for the start button to be pressed
         waitForStart();
-        //creating functions for forward, left turn, right turn and backward
-        // Loop until the OpMode ends
+     
         SparkFunOTOS.Pose2D pos = myOtos.getPosition();
-        ;
-
-
-            // Get the latest position, which includes the x and y coordinates, plus the
-            // heading angle
-
+    
             //applying correct driving instructions under censor data
             for(int i = 0; i<4; i++){
                 myOtos.resetTracking();
@@ -96,80 +72,12 @@ public class OTOS_circle extends LinearOpMode {
                     telemetry.addData("Loop Number: ", i);
                     // Update the telemetry on the driver station
                     telemetry.update();
-                    
                 }
                 stopMotion();
                 sleep(500);
-                
-              
             }
-
-
-           
-            
-/*
-            while (pos.h < 90){
-                fr.setPower(0.9);
-                bl.setPower(-0.9);
-                pos = myOtos.getPosition();
-                telemetry.addData("X coordinate", pos.x);
-                telemetry.addData("Y coordinate", pos.y);
-                telemetry.addData("Heading angle", pos.h);
-                // Update the telemetry on the driver station
-                telemetry.update();
-            }
-            stopMotion();
-            while (pos.y < 30){
-                bl.setPower(0.9);
-                fl.setPower(0.9);
-                fr.setPower(0.9);
-                br.setPower(0.9);
-                pos = myOtos.getPosition();
-                telemetry.addData("X coordinate", pos.x);
-                telemetry.addData("Y coordinate", pos.y);
-                telemetry.addData("Heading angle", pos.h);
-                // Update the telemetry on the driver station
-                telemetry.update();
-            }
-            stopMotion();
-            while (pos.h < 116){
-                fr.setPower(0.9);
-                bl.setPower(-0.9);
-                pos = myOtos.getPosition();
-                telemetry.addData("X coordinate", pos.x);
-                telemetry.addData("Y coordinate", pos.y);
-                telemetry.addData("Heading angle", pos.h);
-                // Update the telemetry on the driver station
-                telemetry.update();
-            }
-            stopMotion();
-            while (pos.x > 5){
-                bl.setPower(0.9);
-                fl.setPower(0.9);
-                fr.setPower(0.9);
-                br.setPower(0.9);
-                pos = myOtos.getPosition();
-                telemetry.addData("X coordinate", pos.x);
-                telemetry.addData("Y coordinate", pos.y);
-                telemetry.addData("Heading angle", pos.h);
-                // Update the telemetry on the driver station
-                telemetry.update();
-            }
-            stopMotion();
-            */
         }
     
-    /*private void updateData(){
-
-        // Log the position to the telemetry
-        telemetry.addData("X coordinate", pos.x);
-        telemetry.addData("Y coordinate", pos.y);
-        telemetry.addData("Heading angle", pos.h);
-        // Update the telemetry on the driver station
-        telemetry.update();
-    }
-
-     */
     private void stopMotion(){
         bl.setPower(0);
         fl.setPower(0);
